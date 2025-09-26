@@ -1,0 +1,300 @@
+<!--
+Personal Profile Website (Basketball Theme)
+File: index.html
+
+How to use:
+1) Save this file as `index.html` in a new GitHub repository (e.g., `your-username.github.io` for user/organization site or any repo for project site).
+2) Commit & push to GitHub.
+3) For user site: name repo `your-username.github.io`. GitHub Pages will serve at https://your-username.github.io
+   For project site: enable GitHub Pages in repo Settings > Pages and choose branch `main` (or `gh-pages`) and `/ (root)`.
+4) Customize the text, colors, images, and links below.
+
+What's inside:
+- Single-file responsive HTML with embedded CSS and JavaScript
+- Basketball-styled visuals, animated hoop, player card, stats, gallery placeholder
+- Contact form that uses `mailto:` (no backend). For a working form, connect to Formspree or similar.
+
+Customization tips:
+- Replace the inline SVG avatar with your photo (use <img> tag or replace the <svg> block).
+- Replace gallery images (currently placeholders) by adding <img src="..."> or links to images in your repo.
+- Edit social links and stats in the HTML where marked.
+
+License: Feel free to edit and use.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Hoops — [Your Name] | Basketball Profile</title>
+  <meta name="description" content="Personal basketball profile — highlights, stats, contact. Perfect for players, coaches, and fans.">
+  <style>
+    /* Reset + basic */
+    :root{
+      --bg:#0b1020; /* dark court */
+      --accent:#ff7a18; /* orange */
+      --muted:#aab3c8;
+      --card:#0f1724;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(11,16,32,0.6);
+      --radius:16px;
+      --max-width:1100px;
+      --shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,120,40,0.05), transparent), var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.4;
+      padding:32px 20px;
+      display:flex;justify-content:center;
+    }
+
+    .wrap{width:100%;max-width:var(--max-width)}
+
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;
+    }
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo .badge{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#ff8a2b,#ff3d00);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+    .logo h1{font-size:18px;margin:0}
+    nav a{color:var(--muted);text-decoration:none;margin-left:14px;font-weight:600}
+
+    .hero{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start;box-shadow:var(--shadow);
+    }
+
+    /* Player card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), var(--card));border-radius:16px;padding:18px}
+    .avatar{display:flex;flex-direction:column;align-items:center;text-align:center}
+    .avatar svg{width:140px;height:140px;border-radius:50%;background:conic-gradient(from 90deg, rgba(0,0,0,0.08), rgba(255,255,255,0.02));padding:12px}
+    .name{font-size:20px;font-weight:700;margin-top:12px}
+    .role{color:var(--muted);font-weight:600}
+    .tagline{margin-top:10px;color:var(--muted);font-size:14px}
+
+    .quick-stats{display:flex;gap:12px;margin-top:16px}
+    .stat{background:var(--glass);padding:12px;border-radius:10px;flex:1}
+    .stat .num{font-size:18px;font-weight:700}
+    .stat .label{color:var(--muted);font-size:12px}
+
+    /* Main panel */
+    .main{
+      display:flex;flex-direction:column;gap:16px
+    }
+    h2{margin:0;font-size:18px}
+    .about{background:var(--glass-2);padding:16px;border-radius:12px}
+    .skills{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .pill{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:8px 12px;border-radius:999px;font-weight:700;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Highlights */
+    .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .highlight{background:var(--glass);padding:14px;border-radius:12px}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+    .gallery img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+
+    /* Contact */
+    .contact{display:grid;grid-template-columns:1fr 260px;gap:12px}
+    .contact form{display:flex;flex-direction:column;gap:8px}
+    input,textarea{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:8px;color:inherit}
+    button{background:linear-gradient(90deg,var(--accent),#ff4b2b);border:none;padding:10px 14px;border-radius:10px;font-weight:800;color:#071226;cursor:pointer}
+
+    footer{margin-top:18px;color:var(--muted);text-align:center}
+
+    /* Responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr;}
+      .contact{grid-template-columns:1fr}
+    }
+
+    /* Decorative basketball hoop */
+    .hoop-wrap{position:relative;width:100%;height:120px;border-radius:12px;overflow:hidden}
+    .court{position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0));}
+    .basketball{position:absolute;right:18px;top:12px;width:72px;height:72px;transform-origin:center;animation:float 3.2s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(12deg)}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="badge" aria-hidden>
+          <!-- simple basketball icon -->
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="white" fill-opacity="0.07" stroke="white" stroke-opacity="0.08"/>
+            <path d="M3 12h18" stroke="#ffb27a" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M12 3c2.5 2.7 2.5 7 0 9.7C9.5 10 9.5 5.7 12 3z" stroke="#ffb27a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Hoops — <span style="opacity:0.9">[Your Name]</span></h1>
+          <div style="color:var(--muted);font-size:13px">Guard • Shooter • Hustle</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#highlights">Highlights</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main class="hero" role="main">
+      <aside class="card">
+        <div class="avatar">
+          <!-- Replace this SVG with your photo if you like -->
+          <svg viewBox="0 0 160 160" role="img" aria-label="avatar">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="#ff8a2b" stop-opacity="0.95"/>
+                <stop offset="1" stop-color="#ff3d00" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <rect width="160" height="160" rx="20" fill="url(#g1)"/>
+            <g transform="translate(20,20)">
+              <circle cx="60" cy="40" r="28" fill="#0b1020"/>
+              <rect x="10" y="84" width="100" height="42" rx="14" fill="#0b1020"/>
+              <!-- subtle basketball lines on avatar -->
+              <path d="M60 12 v56" stroke="#ffb27a" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+
+          <div class="name">[Your Name]</div>
+          <div class="role">Class of 20XX • Guard • [Height]</div>
+          <div class="tagline">Lefty shooter. Team-first attitude. Coaches' kid. Aiming for next level.</div>
+
+          <div class="quick-stats" aria-hidden>
+            <div class="stat"><div class="num">15.4</div><div class="label">PPG</div></div>
+            <div class="stat"><div class="num">5.3</div><div class="label">RPG</div></div>
+            <div class="stat"><div class="num">3.1</div><div class="label">APG</div></div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:8px">
+            <a href="#gallery" style="text-decoration:none"><button aria-label="View highlights">View Highlights</button></a>
+            <a href="#contact" style="text-decoration:none"><button style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Contact</button></a>
+          </div>
+        </div>
+      </aside>
+
+      <section class="main">
+        <div class="about" id="about">
+          <h2>About</h2>
+          <p style="margin-top:8px;color:var(--muted)">I'm <strong>[Your Name]</strong>, a basketball player from <em>[City]</em>. I specialize in catch-and-shoot threes, quick defensive rotations, and leadership on and off the court. I train 6 days a week and compete in school, AAU, and regional showcases.</p>
+          <div class="skills">
+            <div class="pill">3PT Shooting</div>
+            <div class="pill">Pick & Roll</div>
+            <div class="pill">Perimeter Defense</div>
+            <div class="pill">Film Study</div>
+            <div class="pill">Strength & Conditioning</div>
+          </div>
+        </div>
+
+        <div class="hoop-wrap">
+          <div class="court"></div>
+          <svg class="basketball" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <circle cx="50" cy="50" r="48" fill="#ff7a18" stroke="#b24b08" stroke-width="2" />
+            <path d="M2 50c23-32 56-32 96 0" stroke="#b24b08" stroke-width="2" fill="none"/>
+            <path d="M50 2c18 19 18 45 0 78" stroke="#b24b08" stroke-width="2" fill="none"/>
+            <path d="M50 2c-18 19-18 45 0 78" stroke="#b24b08" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+
+        <div>
+          <h2 id="highlights">Highlights</h2>
+          <div class="highlights" style="margin-top:10px">
+            <div class="highlight">
+              <strong>Team Captain</strong>
+              <div style="color:var(--muted);font-size:13px;margin-top:6px">Led team to regional semifinals (20XX). Coach's pick for leadership award.</div>
+            </div>
+            <div class="highlight">
+              <strong>AAU Standout</strong>
+              <div style="color:var(--muted);font-size:13px;margin-top:6px">Consistent starter for [Team Name]. Averaged 15 PPG at recent circuit.</div>
+            </div>
+            <div class="highlight">
+              <strong>Shot Creator</strong>
+              <div style="color:var(--muted);font-size:13px;margin-top:6px">High catch-and-shoot % and mid-range pull-ups under pressure.</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 id="gallery">Gallery</h2>
+          <div class="gallery" style="margin-top:10px">
+            <!-- Replace these with real images in your repo or external links -->
+            <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=140&auto=format&fit=crop&crop=faces" alt="game-1">
+            <img src="https://images.unsplash.com/photo-1517644814940-8f1450b6f0f7?q=80&w=140&auto=format&fit=crop&crop=faces" alt="game-2">
+            <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?q=80&w=140&auto=format&fit=crop&crop=faces" alt="game-3">
+            <img src="https://images.unsplash.com/photo-1544653518-13a20d40f5d9?q=80&w=140&auto=format&fit=crop&crop=faces" alt="training-1">
+          </div>
+        </div>
+
+        <div id="contact">
+          <h2>Contact</h2>
+          <div class="contact" style="margin-top:10px">
+            <form action="mailto:your.email@example.com" method="GET" enctype="text/plain">
+              <input type="text" name="name" placeholder="Your name" required>
+              <input type="email" name="email" placeholder="Your email" required>
+              <textarea name="message" placeholder="Message" rows="5" required></textarea>
+              <div style="display:flex;gap:8px">
+                <button type="submit">Send via Email</button>
+                <a href="mailto:your.email@example.com" style="text-decoration:none"><button type="button" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Open Email</button></a>
+              </div>
+            </form>
+
+            <aside style="background:var(--glass);padding:12px;border-radius:12px;height:100%">
+              <h3 style="margin-top:0">Social & Recruiting</h3>
+              <p style="color:var(--muted);font-size:14px">Follow for videos and recruiting highlights.</p>
+              <p style="margin-top:12px">
+                <strong>Instagram:</strong> <a href="#" style="color:var(--accent);text-decoration:none">@yourhandle</a><br>
+                <strong>Hudl:</strong> <a href="#" style="color:var(--accent);text-decoration:none">profile</a><br>
+                <strong>Coach Email:</strong> <a href="mailto:coach@example.com" style="color:var(--accent);text-decoration:none">coach@example.com</a>
+              </p>
+              <div style="margin-top:12px;display:flex;gap:8px">
+                <a href="#" title="YouTube" aria-label="YouTube">▶</a>
+                <a href="#" title="Instagram" aria-label="Instagram">📸</a>
+                <a href="#" title="Twitter" aria-label="Twitter">🐦</a>
+                <a href="#" title="TikTok" aria-label="TikTok">🎵</a>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <footer>
+          <div style="font-size:13px">Made with ❤️ for the court • Customize this page and host on GitHub Pages</div>
+        </footer>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Small JS for interactivity: smooth scroll and placeholder analytics
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if(href.length>1){
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      })
+    })
+
+    // Optional: populate data dynamically (example)
+    const stats = {ppg:15.4,rpg:5.3,apg:3.1};
+    document.querySelectorAll('.stat').forEach((el,i)=>{
+      const mapping=['ppg','rpg','apg'][i];
+      if(mapping) el.querySelector('.num').textContent = stats[mapping];
+    });
+  </script>
+</body>
+</html>
